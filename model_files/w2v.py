@@ -19,14 +19,14 @@ def load_w2v_embedding(word_list, uniform_scale, dimension_size):
 
 def load_glove_embedding(word_list, uniform_scale, dimension_size):
     glove_words = []
-    with open('../../../code/embedding/glove_words.txt', 'r') as fopen:
+    with open('/home/citrine/datasets/wordvec/glove.840B.300d.txt', 'r') as fopen:
         for line in fopen:
             glove_words.append(line.strip())
     word2offset = {w: i for i, w in enumerate(glove_words)}
     word_vectors = []
     for word in word_list:
         if word in word2offset:
-            line = linecache.getline('../../../code/embedding/glove.840B.300d.txt', word2offset[word]+1)
+            line = linecache.getline('/home/citrine/datasets/wordvec/glove.840B.300d.txt', word2offset[word]+1)
             assert(word == line[:line.find(' ')].strip())
             word_vectors.append(np.fromstring(line[line.find(' '):].strip(), sep=' ', dtype=np.float32))
         elif word == '<pad>':

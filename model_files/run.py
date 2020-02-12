@@ -236,7 +236,7 @@ for t in range(n_trials):
     else:
         print()
         acc, time_stamps = train.train(train_iter, test_iter, mixed_test_iter, model, args, text_field, as_field, sm_field, predict_iter)
-        accuracy_trials.append([acc[0], acc[1]])   # accuracy on test, accuracy on mixed
+        accuracy_trials.append([acc[0].item(), acc[1].item()])   # accuracy on test, accuracy on mixed
         time_stamps_trials.append(time_stamps)
 
 print(accuracy_trials)

@@ -1,3 +1,29 @@
+# This is a refresh version of GCAE
+
+## requirements
+
+* CUDA 10.0
+* pytorch >= 1.0
+* other packages: torchtext, nltk==3.2.5, sacremoses, simplejson
+
+## Resources
+
+GloVe: glove.840B.300d.txt (Please change the 2 paths in w2y.py)
+Following the notice to download the nltk resources when you run the code.
+Datasets:
+* SemEval 2014 Task4
+* SemEval 2015 Task12
+* SemEval 2016 Task5
+Please find them on their official website, and they will finally lead you to Metashare to download (you need a free account). To verify whether you have downloaded the right .xml file, please check 13-25 lines in getsemeval.py. You may have to change the name of 2015's .xml files.
+
+## Run ACSA for test
+```
+python -m run -lr 1e-2 -batch-size 32 -verbose 1 -model CNN_Gate_Aspect -embed_file glove -r_l r -epochs 13
+```
+
+
+The following message is the original README file. (from https://github.com/wxue004cs/GCAE)
+
 # Code and data for Aspect Based Sentiment Analysis with Gated Convolutional Networks
 
 ```

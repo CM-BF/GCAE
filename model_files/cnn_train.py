@@ -19,13 +19,16 @@ def train(train_iter, dev_iter, mixed_test_iter, model, args, text_field, aspect
         for batch in train_iter:
             feature, aspect, target = batch.text, batch.aspect, batch.sentiment
 
-            feature.data.t_()
+            # feature.data.t_()
+            feature.t_()
             if len(feature) < 2:
                 continue
             if not args.aspect_phrase:
-                aspect.data.unsqueeze_(0)
-            aspect.data.t_()
-            target.data.sub_(1)  # batch first, index align
+                aspect.unsqueeze_(0)
+            # aspect.data.t_()
+            aspect.t_()
+            # target.data.sub_(1)  # batch first, index align
+            target.sub_(1)
 
             if args.cuda:
                 feature, aspect, target = feature.cuda(), aspect.cuda(), target.cuda()
@@ -45,7 +48,7 @@ def train(train_iter, dev_iter, mixed_test_iter, model, args, text_field, aspect
                 if args.verbose == 1:
                     sys.stdout.write(
                         '\rBatch[{}] - loss: {:.6f}  acc: {:.4f}%({}/{})'.format(steps,
-                                                                                 loss.data[0],
+                                                                                 loss.item(),
                                                                                  accuracy,
                                                                                  corrects,
                                                                                  batch.batch_size))
@@ -78,22 +81,25 @@ def eval(data_iter, model, args):
     loss = None
     for batch in data_iter:
         feature, aspect, target = batch.text, batch.aspect, batch.sentiment
-        feature.data.t_()
+        # feature.data.t_()
+        feature.t_()
         if not args.aspect_phrase:
-            aspect.data.unsqueeze_(0)
-        aspect.data.t_()
-        target.data.sub_(1)  # batch first, index align
+            aspect.unsqueeze_(0)
+        # aspect.data.t_()
+        aspect.t_()
+        #target.data.sub_(1)  # batch first, index align
+        target.sub_(1)
         if args.cuda:
             feature, aspect, target = feature.cuda(), aspect.cuda(), target.cuda()
 
         logit, pooling_input, relu_weights = model(feature, aspect)
         loss = F.cross_entropy(logit, target, size_average=False)
-        avg_loss += loss.data[0]
+        avg_loss += loss.item()
         corrects += (torch.max(logit, 1)
                      [1].view(target.size()).data == target.data).sum()
 
     size = len(data_iter.dataset)
-    avg_loss = loss.data[0]/size
+    avg_loss = loss.item()/size
     accuracy = 100.0 * corrects/size
     model.train()
     if args.verbose > 1:
