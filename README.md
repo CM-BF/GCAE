@@ -9,11 +9,14 @@
 ## Resources
 
 GloVe: glove.840B.300d.txt (Please change the 2 paths in w2y.py)
+
 Following the notice to download the nltk resources when you run the code.
+
 Datasets:
 * SemEval 2014 Task4
 * SemEval 2015 Task12
 * SemEval 2016 Task5
+
 Please find them on their official website, and they will finally lead you to Metashare to download (you need a free account). To verify whether you have downloaded the right .xml file, please check 13-25 lines in getsemeval.py. You may have to change the name of 2015's .xml files.
 
 ## Run ACSA for test
